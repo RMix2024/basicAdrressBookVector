@@ -2,7 +2,6 @@
 #define VECTOR_H
 
 #include <stdexcept> // For exception handling
-#include <cstdlib>   // For size_t
 
 template <typename T>
 class Vector {
@@ -11,21 +10,16 @@ private:
     size_t capacity;  // Maximum number of elements the vector can hold
     size_t size;      // Current number of elements in the vector
 
-    // Private method to resize the vector
+    // Resize the vector when needed
     void resize(size_t newCapacity);
 
 public:
-    // Constructor
+    // Constructor and Destructor
     Vector();
-
-    // Destructor
     ~Vector();
 
-    // Add an element to the end of the vector
+    // Add a new element to the end
     void push_back(const T& value);
-
-    // Remove the last element from the vector
-    void pop_back();
 
     // Access an element by index
     T& operator[](size_t index);
@@ -33,23 +27,19 @@ public:
 
     // Get the current size of the vector
     size_t getSize() const;
-
-    // Get the current capacity of the vector
-    size_t getCapacity() const;
-
-    // Check if the vector is empty
-    bool isEmpty() const;
 };
 
-// Implementation of the template functions
+// Constructor
 template <typename T>
 Vector<T>::Vector() : data(nullptr), capacity(0), size(0) {}
 
+// Destructor
 template <typename T>
 Vector<T>::~Vector() {
     delete[] data;
 }
 
+// Resize the vector
 template <typename T>
 void Vector<T>::resize(size_t newCapacity) {
     T* newData = new T[newCapacity];
@@ -61,6 +51,7 @@ void Vector<T>::resize(size_t newCapacity) {
     capacity = newCapacity;
 }
 
+// Add a new element
 template <typename T>
 void Vector<T>::push_back(const T& value) {
     if (size == capacity) {
@@ -69,14 +60,7 @@ void Vector<T>::push_back(const T& value) {
     data[size++] = value;
 }
 
-template <typename T>
-void Vector<T>::pop_back() {
-    if (size == 0) {
-        throw std::out_of_range("Cannot pop_back from an empty vector");
-    }
-    --size;
-}
-
+// Access element by index
 template <typename T>
 T& Vector<T>::operator[](size_t index) {
     if (index >= size) {
@@ -85,6 +69,7 @@ T& Vector<T>::operator[](size_t index) {
     return data[index];
 }
 
+// Const version of access by index
 template <typename T>
 const T& Vector<T>::operator[](size_t index) const {
     if (index >= size) {
@@ -93,19 +78,10 @@ const T& Vector<T>::operator[](size_t index) const {
     return data[index];
 }
 
+// Get the current size
 template <typename T>
 size_t Vector<T>::getSize() const {
     return size;
-}
-
-template <typename T>
-size_t Vector<T>::getCapacity() const {
-    return capacity;
-}
-
-template <typename T>
-bool Vector<T>::isEmpty() const {
-    return size == 0;
 }
 
 #endif
