@@ -18,20 +18,41 @@ void displayRecords(const Vector<Record>& records) {
 }
 
 // Function to delete a record by index
-void deleteRecord(Vector<Record>& records, size_t index) {
-    if (index >= records.getSize()) {
+void deleteRecord(Vector<Record>& records) {
+    if (records.getSize() == 0) {
+        std::cout << "No records to delete.\n";
+        return;
+    }
+
+    // Display all records to the user
+    std::cout << "\nAddress Book:\n";
+    for (size_t i = 0; i < records.getSize(); ++i) {
+        std::cout << i + 1 << ". Name: " << records[i].name
+            << ", Phone: " << records[i].phone << '\n';
+    }
+
+    // Prompt the user for the record number to delete
+    size_t recordNumber;
+    std::cout << "\nEnter the record number to delete: ";
+    std::cin >> recordNumber;
+
+    // Validate the record number
+    if (recordNumber < 1 || recordNumber > records.getSize()) {
         std::cout << "Invalid record number. Please try again.\n";
         return;
     }
 
-    // Shift all records after the specified index up by one position
+    // Adjust for zero-based indexing and shift records
+    size_t index = recordNumber - 1;
     for (size_t i = index; i < records.getSize() - 1; ++i) {
         records[i] = records[i + 1];
     }
 
-    records.pop_back(); // Remove the last element
+    // Reduce the size of the vector
+    records.pop_back();
     std::cout << "Record deleted successfully.\n";
 }
+
 
 int main() {
     try {
@@ -64,19 +85,10 @@ int main() {
                 break;
 
             case 3: { // Delete Record
-                if (records.isEmpty()) {
-                    std::cout << "No records to delete.\n";
-                    break;
-                }
-
-                size_t recordNumber;
-                std::cout << "Enter the record number to delete: ";
-                std::cin >> recordNumber;
-
-                // Adjust for zero-based index
-                deleteRecord(records, recordNumber - 1);
+                deleteRecord(records);
                 break;
             }
+
             case 4: // Exit
                 std::cout << "Exiting program. Goodbye!\n";
                 break;
