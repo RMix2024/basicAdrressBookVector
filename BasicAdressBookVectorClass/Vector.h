@@ -4,6 +4,9 @@
 #include <stdexcept> // For exception handling
 #include <cstdlib>   // For size_t
 
+// Template class for a dynamic array
+
+
 template <typename T>
 class Vector {
 private:
